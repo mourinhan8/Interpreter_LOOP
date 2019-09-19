@@ -69,15 +69,11 @@ class Var extends AST {
 }
 
 class ForStatement extends AST {
-    Compound compound_statement;
-    int end_point;
-    int start_point;
+    ArrayList<AST> statements;
     Var variable;
 
-    ForStatement(Compound compound_statement, int end_point, int start_point, Var variable) {
-        this.compound_statement = compound_statement;
-        this.end_point = end_point;
-        this.start_point = start_point;
+    ForStatement(ArrayList<AST> statements, Var variable) {
+        this.statements = statements;
         this.variable = variable;
     }
 }
@@ -239,6 +235,7 @@ class Parser {
         return results;
     }
 
+
     // statement: compound_statement
     //          | for_statement
     //          | assign_statement
@@ -249,26 +246,21 @@ class Parser {
             node = this.compound_statement();
         else if (this.current_token.type == TokenType.ID)
             node = this.assign_statement();
-        else if (this.current_token.type == TokenType.FOR)
+        else if (this.current_token.type == TokenType.LOOP)
             node = this.for_statement();
         else
             node = this.empty();
         return node;
     }
 
-    // for_statement: FOR ID := INTEGER_CONST TO INTEGER_CONST DO compound_statement
+    // for_statement: LOOP ID DO statement_list END
     ForStatement for_statement() throws Exception {
-        this.eat(TokenType.FOR);
+        this.eat(TokenType.LOOP);
         Var variable = this.variable();
-        this.eat(TokenType.ASSIGN);
-        Token start = this.current_token; // get the start point
-        this.eat(TokenType.INTEGER_CONST);
-        this.eat(TokenType.TO);
-        Token end = this.current_token; // get the end point
-        this.eat(TokenType.INTEGER_CONST);
         this.eat(TokenType.DO);
-        Compound compound = this.compound_statement();
-        return new ForStatement(compound, Integer.parseInt(end.value), Integer.parseInt(start.value), variable);
+        ArrayList<AST> statements = this.statement_list();
+        this.eat(TokenType.END);
+        return new ForStatement(statements, variable);
     }
 
     // assign_statement: variable ASSIGN expr

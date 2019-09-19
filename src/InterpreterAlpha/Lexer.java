@@ -26,8 +26,7 @@ enum TokenType {
     VAR,
     COLON, // :
     COMMA, // ,
-    FOR,
-    TO,
+    LOOP,
     DO,
     EOF,
     // EOF token is used to indicate that
@@ -60,8 +59,7 @@ class Lexer {
         map.put("REAL", new Token(TokenType.REAL, "REAL"));
         map.put("BEGIN", new Token(TokenType.BEGIN, "BEGIN"));
         map.put("END", new Token(TokenType.END, "END"));
-        map.put("FOR", new Token(TokenType.FOR, "FOR"));
-        map.put("TO", new Token(TokenType.TO, "TO"));
+        map.put("LOOP", new Token(TokenType.LOOP, "LOOP"));
         map.put("DO", new Token(TokenType.DO, "DO"));
         return Collections.unmodifiableMap(map);
     }

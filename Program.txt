@@ -1,14 +1,19 @@
 PROGRAM thisProgram;
 VAR
-    var1       : INTEGER;
-    a, b       : REAL;
+    var1, a, b, c, d : INTEGER;
 
 BEGIN {example}
-    a := 0;
-    b := 1;
-    FOR var1 := 1 TO 10 DO
-        BEGIN
-            a := a + b;
-            b := b + 1;
+    a := 2;
+    b := 5;
+    c := 10;
+    var1 := 1;
+    LOOP b DO
+        var1 := var1 + a;
+        LOOP a DO
+            c := c + 1;
         END;
+    END;
+    LOOP b DO
+        a := a + 1;
+    END
 END. {example}

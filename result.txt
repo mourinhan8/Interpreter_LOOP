@@ -1,5 +1,6 @@
-<a : REAL>; <b : REAL>; REAL; <var1 : INTEGER>; INTEGER; 
+<a : INTEGER>; <b : INTEGER>; <c : INTEGER>; <d : INTEGER>; REAL; <var1 : INTEGER>; INTEGER; 
 
-a = 55.0
-b = 11.0
-var1 = 10
+a = 7.0
+b = 5
+c = 20.0
+var1 = 11.0

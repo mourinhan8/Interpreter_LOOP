@@ -2,12 +2,13 @@ package InterpreterAlpha;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.HashMap;
 import java.util.Map;
 
+
 //AST visitors
+
 class NodeVisitor {
     String visit(AST node) throws Exception {
         if (node instanceof Block)
@@ -281,10 +282,15 @@ public class InterpreterAlpha extends NodeVisitor {
 
     @Override
     String visit_for(ForStatement node) throws Exception {
-        GLOBAL_SCOPE.put(node.variable.value, null);
-        for (int tmp = node.start_point; tmp <= node.end_point; tmp++) {
-            this.visit(node.compound_statement);
-            GLOBAL_SCOPE.replace(node.variable.value, Integer.toString(tmp));
+        String val = GLOBAL_SCOPE.getOrDefault(node.variable.value, null);
+        if (val == null)
+            throw new Exception("No variable found in for_loop!");
+        else {
+            int end_point = Integer.parseInt(val);
+            for (int tmp = 1; tmp <= end_point; tmp++) {
+                for (AST nod : node.statements)
+                    this.visit(nod);
+            }
         }
         return "";
     }
