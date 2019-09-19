@@ -1,0 +1,14 @@
+PROGRAM thisProgram;
+VAR
+    var1       : INTEGER;
+    a, b       : REAL;
+
+BEGIN {example}
+    a := 0;
+    b := 1;
+    FOR var1 := 1 TO 10 DO
+        BEGIN
+            a := a + b;
+            b := b + 1;
+        END;
+END. {example}
