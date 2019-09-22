@@ -1,6 +1,9 @@
-<a : INTEGER>; <b : INTEGER>; <c : INTEGER>; <d : INTEGER>; REAL; <var1 : INTEGER>; INTEGER; 
-
-a = 7.0
+xyz1 = 2500
+a = 18745
+xyz2 = 2500
 b = 5
-c = 20.0
-var1 = 11.0
+c = 32
+x = 2
+y = 0
+z = 1
+var1 = 2

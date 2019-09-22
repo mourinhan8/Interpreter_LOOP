@@ -6,28 +6,20 @@ import java.util.Map;
 
 enum TokenType {
     INTEGER,
-    REAL,
     INTEGER_CONST,
-    REAL_CONST,
     PLUS, // +
     MINUS, // -
     MUL, // *
-    INTEGER_DIV, // DIV
-    FLOAT_DIV, // /
+    DIV, // DIV
     LPAREN, // (
     RPAREN, // )
     ID,
     ASSIGN, // :=
-    BEGIN,
-    END,
     SEMI, // ;
-    DOT, // .
-    PROGRAM,
     VAR,
-    COLON, // :
-    COMMA, // ,
     LOOP,
     DO,
+    END,
     EOF,
     // EOF token is used to indicate that
     // there is no more input left for lexical analysis
@@ -52,15 +44,13 @@ class Lexer {
     // map of constant keywords
     private static Map<String, Token> initMap() {
         Map<String, Token> map = new HashMap<>();
-        map.put("PROGRAM", new Token(TokenType.PROGRAM, "PROGRAM"));
+        //map.put("PROGRAM", new Token(TokenType.PROGRAM, "PROGRAM"));
         map.put("VAR", new Token(TokenType.VAR, "VAR"));
-        map.put("DIV", new Token(TokenType.INTEGER_DIV, "DIV"));
+        map.put("DIV", new Token(TokenType.DIV, "DIV"));
         map.put("INTEGER", new Token(TokenType.INTEGER, "INTEGER"));
-        map.put("REAL", new Token(TokenType.REAL, "REAL"));
-        map.put("BEGIN", new Token(TokenType.BEGIN, "BEGIN"));
-        map.put("END", new Token(TokenType.END, "END"));
         map.put("LOOP", new Token(TokenType.LOOP, "LOOP"));
         map.put("DO", new Token(TokenType.DO, "DO"));
+        map.put("END", new Token(TokenType.END, "DO"));
         return Collections.unmodifiableMap(map);
     }
 
@@ -84,35 +74,14 @@ class Lexer {
         }
     }
 
-    // look at the next character
-    char peek() {
-        int peek_pos = this.pos + 1;
-        if (peek_pos > this.text.length() - 1) {
-            return '\0';
-        } else {
-            return this.text.charAt(peek_pos);
-        }
-    }
-
-    // Return a multi digit integer or real number token (as a String)
+    // Return a multi digit integer number token (as a String)
     Token number() {
         StringBuilder result = new StringBuilder();
         while (this.current_char != '\0' && Character.isDigit(this.current_char)) {
             result.append(this.current_char);
             this.advance();
         }
-
-        if (this.current_char == '.') {
-            result.append(this.current_char);
-            this.advance();
-
-            while (this.current_char != '\0' && Character.isDigit(this.current_char)) {
-                result.append(this.current_char);
-                this.advance();
-            }
-            return new Token(TokenType.REAL_CONST, result.toString());
-        } else
-            return new Token(TokenType.INTEGER_CONST, result.toString());
+        return new Token(TokenType.INTEGER_CONST, result.toString());
     }
 
     Token _id() {
@@ -121,7 +90,6 @@ class Lexer {
             result.append(this.current_char);
             this.advance();
         }
-
         return RESERVED_KEYWORDS.getOrDefault(result.toString(), new Token(TokenType.ID, result.toString()));
     }
 
@@ -153,7 +121,7 @@ class Lexer {
                 return this.number();
             }
 
-            if (this.current_char == ':' && this.peek() == '=') {
+            if (this.current_char == ':') {
                 this.advance();
                 this.advance();
                 return new Token(TokenType.ASSIGN, ":=");
@@ -164,15 +132,6 @@ class Lexer {
                 return new Token(TokenType.SEMI, ";");
             }
 
-            if (this.current_char == ':') {
-                this.advance();
-                return new Token(TokenType.COLON, ":");
-            }
-
-            if (this.current_char == ',') {
-                this.advance();
-                return new Token(TokenType.COMMA, ",");
-            }
 
             if (this.current_char == '+') {
                 this.advance();
@@ -189,11 +148,6 @@ class Lexer {
                 return new Token(TokenType.MUL, "*");
             }
 
-            if (this.current_char == '/') {
-                this.advance();
-                return new Token(TokenType.FLOAT_DIV, "/");
-            }
-
             if (this.current_char == '(') {
                 this.advance();
                 return new Token(TokenType.LPAREN, "(");
@@ -202,11 +156,6 @@ class Lexer {
             if (this.current_char == ')') {
                 this.advance();
                 return new Token(TokenType.RPAREN, ")");
-            }
-
-            if (this.current_char == '.') {
-                this.advance();
-                return new Token(TokenType.DOT, ".");
             }
 
             this.error();

@@ -1,19 +1,35 @@
-PROGRAM thisProgram;
-VAR
-    var1, a, b, c, d : INTEGER;
+a := 1;
+b:= 5;
+c := 1024;
+var1 := 2;
+x := 2;
+xyz1 := 2500;
+xyz2 := 1000;
 
-BEGIN {example}
-    a := 2;
-    b := 5;
-    c := 10;
-    var1 := 1;
-    LOOP b DO
-        var1 := var1 + a;
-        LOOP a DO
-            c := c + 1;
-        END;
+{ Normal loop with 2 statements}
+LOOP b DO
+    a := (a + 4) * 5;
+    c := c DIV 2;
+END;
+
+{Loop within loop}
+LOOP b DO
+    LOOP x DO
+        var1 := var1 + 1;
     END;
-    LOOP b DO
-        a := a + 1;
-    END
-END. {example}
+END;
+
+{If then else example}
+y := 1;
+z := 0;
+var1 := var1 - 10;
+LOOP var1 DO
+    y := 0;
+    z := 1;
+END;
+LOOP y DO
+    xyz1 := 1000;
+END;
+LOOP z DO
+    xyz2 := 2500;
+END;
